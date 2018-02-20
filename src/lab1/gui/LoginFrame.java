@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JPasswordField;
@@ -18,6 +19,8 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LoginFrame extends JFrame {
 
@@ -69,7 +72,7 @@ public class LoginFrame extends JFrame {
 		);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(51, 153, 0), 3), "Login", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 0)));
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(51, 153, 0), 3, true), "Login", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 0)));
 		
 		txtPassword = new JPasswordField();
 		txtPassword.setColumns(10);
@@ -97,6 +100,17 @@ public class LoginFrame extends JFrame {
 		);
 		
 		JButton btnLogin = new JButton("");
+		btnLogin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				MenuFrame menu = new MenuFrame();
+				menu.setVisible(true);
+				menu.setResizable(false);
+				menu.setLocationRelativeTo(null);
+				menu.setTitle("COMP303_Lab1");
+				setVisible(false);
+			}
+		});
 		btnLogin.setToolTipText("Log in");
 		btnLogin.setIcon(new ImageIcon(LoginFrame.class.getResource("/lab1/img/loginButton.png")));
 		
@@ -106,6 +120,12 @@ public class LoginFrame extends JFrame {
 		lblLoginImage.setIcon(new ImageIcon(LoginFrame.class.getResource("/lab1/img/login.png")));
 		
 		JButton btnNewButton_1 = new JButton("");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "Responsabilities:\n\nServer: Wesley Angus #\nClasses: Manoel Brito #\nGUI: Kenny Perroni #300825160", "About Authors", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		btnNewButton_1.setToolTipText("Help");
 		btnNewButton_1.setIcon(new ImageIcon(LoginFrame.class.getResource("/lab1/img/help.png")));
 		GroupLayout gl_panel = new GroupLayout(panel);

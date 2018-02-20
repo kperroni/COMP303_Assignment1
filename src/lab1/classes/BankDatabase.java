@@ -10,8 +10,8 @@ public class BankDatabase
    public BankDatabase()
    {
       accounts = new Account[2]; // just 2 accounts for testing
-      accounts[0] = new Account(12345, 54321, 1000.0, 1200.0);
-      accounts[1] = new Account(98765, 56789, 200.0, 200.0);  
+      accounts[0] = new Account(12345, 54321, 1000.0);
+      accounts[1] = new Account(98765, 56789, 200.0);  
    } // end no-argument BankDatabase constructor
    
    // retrieve Account object containing specified account number
@@ -48,38 +48,15 @@ public class BankDatabase
       return getAccount(userAccountNumber).getAvailableBalance();
    } // end method getAvailableBalance
 
-   // return total balance of Account with specified account number
-   public double getTotalBalance(int userAccountNumber)
+   // deposit an amount to Account with specified account number
+   public void deposit(int userAccountNumber, double amount)
    {
-      return getAccount(userAccountNumber).getTotalBalance();
-   } // end method getTotalBalance
+      getAccount(userAccountNumber).deposit(amount);
+   } // end method deposit
 
-   // credit an amount to Account with specified account number
-   public void credit(int userAccountNumber, double amount)
-   {
-      getAccount(userAccountNumber).credit(amount);
-   } // end method credit
-
-   // debit an amount from Account with specified account number
+   // withdraw an amount from Account with specified account number
    public void debit(int userAccountNumber, double amount)
    {
-      getAccount(userAccountNumber).debit(amount);
-   } // end method debit
+      getAccount(userAccountNumber).withdraw(amount);
+   } // end method withdraw
 } // end class BankDatabase
-
-
-
-/**************************************************************************
- * (C) Copyright 1992-2014 by Deitel & Associates, Inc. and               *
- * Pearson Education, Inc. All Rights Reserved.                           *
- *                                                                        *
- * DISCLAIMER: The authors and publisher of this book have used their     *
- * best efforts in preparing the book. These efforts include the          *
- * development, research, and testing of the theories and programs        *
- * to determine their effectiveness. The authors and publisher make       *
- * no warranty of any kind, expressed or implied, with regard to these    *
- * programs or to the documentation contained in these books. The authors *
- * and publisher shall not be liable in any event for incidental or       *
- * consequential damages in connection with, or arising out of, the       *
- * furnishing, performance, or use of these programs.                     *
- *************************************************************************/
