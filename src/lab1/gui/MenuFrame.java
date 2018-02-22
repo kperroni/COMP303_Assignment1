@@ -12,6 +12,9 @@ import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
+
+import lab1.classes.BankDatabase;
+
 import java.awt.Color;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
@@ -29,7 +32,7 @@ public class MenuFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -40,12 +43,12 @@ public class MenuFrame extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public MenuFrame() {
+	public MenuFrame(int userAccount) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MenuFrame.class.getResource("/lab1/img/windowIcon.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 299, 397);
@@ -73,27 +76,62 @@ public class MenuFrame extends JFrame {
 		JLabel lblDepositImage = new JLabel("");
 		lblDepositImage.setIcon(new ImageIcon(MenuFrame.class.getResource("/lab1/img/deposit.png")));
 		
+		BankDatabase account = new BankDatabase();
+		
 		JButton btnWithdraw = new JButton("Withdraw");
 		btnWithdraw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showInputDialog(null, "Enter amount to withdraw");
+				try {
+				String valueInitial = JOptionPane.showInputDialog(null, "Enter amount to withdraw");
+				double value = Double.parseDouble(valueInitial);
+				if (value <= 0.0) {
+					JOptionPane.showMessageDialog(panel, "Type value greater than 0.0", "Error", JOptionPane.ERROR_MESSAGE);
+
+				}
+				else if (account.getAvailableBalance(userAccount)-value >= 0){
+					account.debit(userAccount, value);
+					}else {
+						JOptionPane.showMessageDialog(panel, " You don't have enough Amount", "Error", JOptionPane.ERROR_MESSAGE);
+	
+					}
+				}
+				catch (Exception e) {
+					JOptionPane.showMessageDialog(panel, "Type number", "Error", JOptionPane.ERROR_MESSAGE);
+
+				}
 			}
 		});
-		
+
 		JButton btnDeposit = new JButton("Deposit");
 		btnDeposit.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showInputDialog(null, "Enter amount to deposit");
+			public void mouseClicked(MouseEvent e) {				
+				try {
+					String valueInitial = JOptionPane.showInputDialog(null, "Enter amount to deposit");
+					double value = Double.parseDouble(valueInitial);
+					if (value <= 0.0) {
+						JOptionPane.showMessageDialog(panel, "Type value greater than 0.0", "Error", JOptionPane.ERROR_MESSAGE);
+
+					}
+					else {
+						account.deposit(userAccount, value);
+					}
+				
+				}catch (Exception e2) {
+						JOptionPane.showMessageDialog(panel, "Type number", "Error", JOptionPane.ERROR_MESSAGE);
+
+					}
 			}
 		});
 		
 		JButton btnBalance = new JButton("Balance");
 		btnBalance.addMouseListener(new MouseAdapter() {
+			//Implemented to login validation
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Your balance is:");
+				JOptionPane.showMessageDialog(null, "Your balance is: "+account.getAvailableBalance(userAccount));
 			}
 		});
 		
@@ -166,4 +204,5 @@ public class MenuFrame extends JFrame {
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
 	}
+
 }

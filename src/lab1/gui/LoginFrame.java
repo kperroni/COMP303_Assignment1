@@ -14,6 +14,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.border.TitledBorder;
+
+import lab1.classes.Account;
+import lab1.classes.BankDatabase;
+
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -27,11 +31,12 @@ public class LoginFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
+	public int userAccount;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -42,7 +47,7 @@ public class LoginFrame extends JFrame {
 				}
 			}
 		});
-	}
+	}/*
 
 	/**
 	 * Create the frame.
@@ -99,18 +104,40 @@ public class LoginFrame extends JFrame {
 					.addContainerGap())
 		);
 		
+		BankDatabase accountValidation = new BankDatabase();
+		
+		
 		JButton btnLogin = new JButton("");
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				MenuFrame menu = new MenuFrame();
-				menu.setVisible(true);
-				menu.setResizable(false);
-				menu.setLocationRelativeTo(null);
-				menu.setTitle("COMP303_Lab1");
-				setVisible(false);
+				//Implemented login validation
+				try {
+				char[] userPinChar = txtPassword.getPassword();
+				String passString = new String(userPinChar);
+				int userPin = Integer.parseInt(passString);
+				userAccount = Integer.parseInt(txtUsername.getText());
+				
+					if (accountValidation.authenticateUser(userAccount,userPin)) {
+						MenuFrame menu = new MenuFrame(userAccount);	
+						menu.setVisible(true);
+						menu.setResizable(false);
+						menu.setLocationRelativeTo(null);
+						menu.setTitle("COMP303_Lab1");
+						setVisible(false);
+					} else {
+						JOptionPane.showMessageDialog(panel, "Could not find User or Password", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}catch (Exception e) {
+					JOptionPane.showMessageDialog(panel, "Could not find User or Password", "Error", JOptionPane.ERROR_MESSAGE);
+
+				}
+			
+
 			}
 		});
+		
+		
 		btnLogin.setToolTipText("Log in");
 		btnLogin.setIcon(new ImageIcon(LoginFrame.class.getResource("/lab1/img/loginButton.png")));
 		
@@ -123,7 +150,7 @@ public class LoginFrame extends JFrame {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Responsabilities:\n\nServer: Wesley Angus #\nClasses: Manoel Brito #\nGUI: Kenny Perroni #300825160", "About Authors", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Responsabilities:\n\nServer: Wesley Angus #\nClasses: Manoel Britto #300903820\nGUI: Kenny Perroni #300825160", "About Authors", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnNewButton_1.setToolTipText("Help");
@@ -179,8 +206,12 @@ public class LoginFrame extends JFrame {
 								.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap(26, Short.MAX_VALUE))
 		);
-		panel.setLayout(gl_panel);
-		containerPanel.setLayout(gl_containerPanel);
-		contentPane.setLayout(gl_contentPane);
+		
+
+			panel.setLayout(gl_panel);
+			containerPanel.setLayout(gl_containerPanel);
+			contentPane.setLayout(gl_contentPane);
+
+	
 	}
 }
