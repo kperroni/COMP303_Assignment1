@@ -18,32 +18,32 @@ public class Account
    } // end Account constructor
 
    // determines whether a user-specified PIN matches PIN in Account
-   public boolean validatePIN(int userPIN)
+   public synchronized boolean validatePIN(int userPIN)
    {
 	   return userPIN == this.pin;
 
    } // end method validatePIN
    
    // returns available balance
-   public double getAvailableBalance()
+   public synchronized double getAvailableBalance()
    {
       return availableBalance;
    } // end getAvailableBalance
 
    // credits an amount to the account
-   public void deposit(double amount)
+   public synchronized void deposit(double amount)
    {
       this.availableBalance += amount; // add to total balance
    } // end method credit
 
    // withdraws an amount from the account
-   public void withdraw(double amount)
+   public synchronized void withdraw(double amount)
    {
       this.availableBalance -= amount; // subtract from available balance
    } // end method withdraw
 
    // returns account number
-   public int getAccountNumber()
+   public synchronized int getAccountNumber()
    {
       return accountNumber;  
    } // end method getAccountNumber

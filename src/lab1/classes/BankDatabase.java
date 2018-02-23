@@ -2,7 +2,7 @@ package lab1.classes;
 // BankDatabase.java
 // Represents the bank account information database 
 
-public class BankDatabase
+public class BankDatabase 
 {
    private Account accounts[]; // array of Accounts
    
@@ -15,7 +15,7 @@ public class BankDatabase
    } // end no-argument BankDatabase constructor
    
    // retrieve Account object containing specified account number
-   private Account getAccount(int accountNumber)
+   private synchronized Account getAccount(int accountNumber)
    {
       // loop through accounts searching for matching account number
       for (Account currentAccount : accounts)
@@ -30,7 +30,7 @@ public class BankDatabase
 
    // determine whether user-specified account number and PIN match
    // those of an account in the database
-   public boolean authenticateUser(int userAccountNumber, int userPIN)
+   public synchronized  boolean authenticateUser(int userAccountNumber, int userPIN)
    {
       // attempt to retrieve the account with the account number
       Account userAccount = getAccount(userAccountNumber);
@@ -43,19 +43,19 @@ public class BankDatabase
    } // end method authenticateUser
 
    // return available balance of Account with specified account number
-   public double getAvailableBalance(int userAccountNumber)
+   public synchronized double getAvailableBalance(int userAccountNumber)
    {
       return getAccount(userAccountNumber).getAvailableBalance();
    } // end method getAvailableBalance
 
    // deposit an amount to Account with specified account number
-   public void deposit(int userAccountNumber, double amount)
+   public synchronized void deposit(int userAccountNumber, double amount)
    {
       getAccount(userAccountNumber).deposit(amount);
    } // end method deposit
 
    // withdraw an amount from Account with specified account number
-   public void debit(int userAccountNumber, double amount)
+   public synchronized void debit(int userAccountNumber, double amount)
    {
       getAccount(userAccountNumber).withdraw(amount);
    } // end method withdraw
