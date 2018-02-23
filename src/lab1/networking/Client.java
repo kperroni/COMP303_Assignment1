@@ -2,15 +2,22 @@ package lab1.networking;
 import java.io.*;
 import java.net.*;
 
+import lab1.gui.LoginFrame;
+import lab1.gui.MenuFrame;
+
 public class Client {
 	Socket socket;
+	LoginFrame frame = new LoginFrame();
+	MenuFrame frameMenu;
+	boolean userLogged = false;
 
-	static class Sender extends Thread {
+	  class Sender extends Thread {
 		PrintWriter writer;
 		OutputStream out;
 		InputStream in;
 		BufferedReader thisReader;
-		String message;
+	    String message;
+		
 
 		public Sender(InputStream in, OutputStream out) {
 			this.out = out;
@@ -19,37 +26,70 @@ public class Client {
 			thisReader = new BufferedReader(new InputStreamReader(in));
 		}
 
+		// Sender
 		@Override
 		public void run() {
 			do {
 				try {
-					message = thisReader.readLine();
+					//message = thisReader.readLine();
 					synchronized (out) {
-						writer.println(message);
+						if(userLogged == false) {
+							if(frame.checkLogin) {
+								char[] userPinChar = frame.txtPassword.getPassword();
+								String passString = new String(userPinChar);
+								//int userPin = Integer.parseInt(passString);
+								writer.println("login-"+frame.txtUsername.getText()+"-"+passString);
+								frame.checkLogin = false;
+						}
+						
+							}				
 					}
 				} catch (Exception e) {
 					break;
 				}
-			} while (message != null);
+			} while (true);
 		}
 	}
 
-	static class Receiver extends Thread {
+	 class Receiver extends Thread {
 		InputStream in;
 		BufferedReader servReader;
-		String line;
+		String[] line;
 
 		public Receiver(InputStream in) {
 			this.in = in;
 			servReader = new BufferedReader(new InputStreamReader(in));
 		}
 
+		// Receiver
 		@Override
 		public void run() {
 			do {
 				try {
-					line = servReader.readLine();
-					System.out.println(line);
+					line = servReader.readLine().split("-");
+					
+					switch (line[0]) {
+					
+					case "login":{
+						if(line[1].equals("success")) {
+							userLogged = true;
+							frameMenu = new MenuFrame(Integer.parseInt(line[2]));
+							frameMenu.setVisible(true);
+							frameMenu.setResizable(false);
+							frameMenu.setLocationRelativeTo(null);
+							frameMenu.setTitle("COMP303_Lab1");
+							frame.setVisible(false);
+						}
+						if(line[1].equals("fail")) {
+						
+								frame.showMessage("Login Failed");		
+						}
+						break;
+					}
+					}
+					System.out.println(line[0]);
+					
+					// Receive login status, open menu frame HERE
 				} catch (Exception e) {
 					break;
 				}
@@ -63,6 +103,7 @@ public class Client {
 	}
 
 	public void connect() throws Exception {
+		frame.setVisible(true);
 		InputStream in = this.socket.getInputStream();
 		OutputStream out = this.socket.getOutputStream();
 

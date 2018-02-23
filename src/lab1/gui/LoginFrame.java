@@ -25,18 +25,23 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.PrintWriter;
+
 
 public class LoginFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtUsername;
-	private JPasswordField txtPassword;
+	public JTextField txtUsername;
+	public JPasswordField txtPassword;
 	public int userAccount;
+	PrintWriter writer;
+	public boolean checkLogin = false;
+	public boolean error = false;
 
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -47,7 +52,7 @@ public class LoginFrame extends JFrame {
 				}
 			}
 		});
-	}/*
+	}
 
 	/**
 	 * Create the frame.
@@ -112,14 +117,17 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				//Implemented login validation
-				try {
+				checkLogin = true;
+				/*try {
+				
+				
 				char[] userPinChar = txtPassword.getPassword();
 				String passString = new String(userPinChar);
 				int userPin = Integer.parseInt(passString);
 				userAccount = Integer.parseInt(txtUsername.getText());
 				
 					if (accountValidation.authenticateUser(userAccount,userPin)) {
-						MenuFrame menu = new MenuFrame(userAccount);	
+						MenuFrame menu = new MenuFrame();	
 						menu.setVisible(true);
 						menu.setResizable(false);
 						menu.setLocationRelativeTo(null);
@@ -131,7 +139,7 @@ public class LoginFrame extends JFrame {
 				}catch (Exception e) {
 					JOptionPane.showMessageDialog(panel, "Could not find User or Password", "Error", JOptionPane.ERROR_MESSAGE);
 
-				}
+				}*/
 			
 
 			}
@@ -213,5 +221,10 @@ public class LoginFrame extends JFrame {
 			contentPane.setLayout(gl_contentPane);
 
 	
+	}
+	
+	public synchronized void showMessage(String message) {
+		
+		JOptionPane.showMessageDialog(null, message);	
 	}
 }

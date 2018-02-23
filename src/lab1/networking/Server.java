@@ -8,7 +8,7 @@ import lab1.classes.BankDatabase;
 
 public class Server {
 	ServerSocket main;
-	BankDatabase bankDB;
+	BankDatabase bankDB = new BankDatabase();
 
 	class Reply extends Thread {
 		OutputStream out;
@@ -26,28 +26,35 @@ public class Server {
 			writer = new PrintWriter(out, true);
 			clientName = name;
 		}
-
+		// Server receiver
 		@Override
 		public void run() {
 			do {
 				try {
 					synchronized (in) {
-						clientMessage = (clientReader.readLine()).split(" ");
+						clientMessage = (clientReader.readLine()).split("-");
+						System.out.println(clientMessage[0]);
+
 					}
-					if (clientMessage.length > 1) {
+					if (clientMessage.length >= 1) {
 						if (clientMessage[0].equals("deposit")) {
 							// TODO: Do deposit logic
+							writer.println("Depositing");
 						} else if (clientMessage[0].equals("withdraw")) {
 							// TODO: Do withdraw logic
 						} else if (clientMessage[0].equals("viewBalance")) {
 							// TODO: Do logic to view account balance
 						} else if (clientMessage[0].equals("login")) {
 							// TODO: Do login logic
-							if (Server.this.bankDB.authenticateUser(Integer.parseInt(clientMessage[1]),
+							if (bankDB.authenticateUser(Integer.parseInt(clientMessage[1]),
 									Integer.parseInt(clientMessage[2]))) {
 								// User is logged in
+								writer.println("login-success-123");
 							} else {
 								// return some error
+								writer.println("login-fail");
+								
+								
 							}
 						} else {
 							writer.println("Error: That is not a valid command. Please try again.");
@@ -56,6 +63,7 @@ public class Server {
 						writer.println("Error: No command specified. Please enter a valid command.");
 					}
 				} catch (Exception e) {
+					e.printStackTrace();
 					break;
 				}
 			} while (clientMessage != null);
@@ -76,7 +84,7 @@ public class Server {
 			// handle the connection
 			System.out.println("Handling connection to client " + index);
 			(new Reply(in, out, "Client" + index)).start();
-			index++;
+			//index++;
 		}
 	}
 
