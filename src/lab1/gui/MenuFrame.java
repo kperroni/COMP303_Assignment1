@@ -94,14 +94,15 @@ public class MenuFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {				
 				try {
-					String valueInitial = JOptionPane.showInputDialog(null, "Enter amount to deposit");
+					valueInitial = JOptionPane.showInputDialog(null, "Enter amount to deposit");
 					double value = Double.parseDouble(valueInitial);
-					if (value <= 0.0) {
+					if (value <= 0.0 || valueInitial.equals(null) ) {
 						JOptionPane.showMessageDialog(panel, "Type value greater than 0.0", "Error", JOptionPane.ERROR_MESSAGE);
 
 					}
 					else {
 						//account.deposit(userAccount, value);
+						operation = 2;
 					}
 				
 				}catch (Exception e2) {
@@ -117,7 +118,8 @@ public class MenuFrame extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			//	JOptionPane.showMessageDialog(null, "Your balance is: "+account.getAvailableBalance(userAccount));
+			
+				operation = 3;
 			}
 		});
 		

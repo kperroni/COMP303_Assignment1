@@ -3,6 +3,8 @@ package lab1.networking;
 import java.io.*;
 import java.net.*;
 
+import javax.swing.JOptionPane;
+
 import lab1.gui.LoginFrame;
 import lab1.gui.MenuFrame;
 
@@ -39,11 +41,25 @@ public class Client {
 					synchronized (out) {
 						// Loggin in
 						if (userLogged == false) {
+							int passWord=0;
+							int user=0;
 							if (frame.getCheckLogin()) {
 								char[] userPinChar = frame.txtPassword.getPassword();
 								String passString = new String(userPinChar);
+								
 								// int userPin = Integer.parseInt(passString);
-								sendData("login-" + frame.txtUsername.getText() + "-" + passString);
+								try {
+									 passWord = Integer.parseInt(passString);
+									 user = Integer.parseInt(frame.txtUsername.getText());
+									 sendData("login-" + user + "-" + passWord);
+									}
+									catch (Exception e) {
+										sendData("login-fail");
+
+									}
+								
+								
+								
 								// writer.println("login-" + frame.txtUsername.getText() + "-" + passString);
 								frame.setCheckLogin(false);
 							}
@@ -53,17 +69,18 @@ public class Client {
 							switch (frameMenu.getOperation()) {
 
 							case 1: { // Withdraw
-								sendData("withdraw-" + frameMenu.getAmount());
+								sendData("withdraw-" + frameMenu.getAmount() + "-" +frame.txtUsername.getText());
 								frameMenu.setOperation(0);
 								break;
 							}
 							case 2: { // Deposit
-
+								sendData("deposit-" + frameMenu.getAmount()+"-"+frame.txtUsername.getText());
 								frameMenu.setOperation(0);
 								break;
 							}
 							case 3: { // Balance
-
+								
+								sendData("viewBalance-" + frame.txtUsername.getText());
 								frameMenu.setOperation(0);
 								break;
 							}
@@ -118,6 +135,13 @@ public class Client {
 						if (line[1].equals("fail")) {
 							frameMenu.showMessage("Error, you do not have enough funds for this operation");
 						}
+						break;
+					}
+					case "viewBalance": {
+						if (line[1].equals("success")) {
+							frameMenu.showMessage("Your balande is: "+line[2]);
+						}
+
 						break;
 					}
 					}
