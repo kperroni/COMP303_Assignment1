@@ -42,6 +42,7 @@ public class Server {
 							writer.println("Depositing");
 						} else if (clientMessage[0].equals("withdraw")) {
 							// TODO: Do withdraw logic
+							writer.println("withdraw-success");
 						} else if (clientMessage[0].equals("viewBalance")) {
 							// TODO: Do logic to view account balance
 						} else if (clientMessage[0].equals("login")) {
@@ -49,7 +50,7 @@ public class Server {
 							if (bankDB.authenticateUser(Integer.parseInt(clientMessage[1]),
 									Integer.parseInt(clientMessage[2]))) {
 								// User is logged in
-								writer.println("login-success-123");
+								writer.println("login-success-"+clientMessage[1]);
 							} else {
 								// return some error
 								writer.println("login-fail");
@@ -66,7 +67,7 @@ public class Server {
 					e.printStackTrace();
 					break;
 				}
-			} while (clientMessage != null);
+			} while (true);
 		}
 	}
 

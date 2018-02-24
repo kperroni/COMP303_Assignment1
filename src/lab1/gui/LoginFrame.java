@@ -115,7 +115,7 @@ public class LoginFrame extends JFrame {
 		JButton btnLogin = new JButton("");
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public synchronized void mouseClicked(MouseEvent arg0) {
 				//Implemented login validation
 				checkLogin = true;
 				/*try {
@@ -157,7 +157,7 @@ public class LoginFrame extends JFrame {
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public synchronized void mouseClicked(MouseEvent e) {
 				JOptionPane.showMessageDialog(null, "Responsabilities:\n\nServer: Wesley Angus #\nClasses: Manoel Britto #300903820\nGUI: Kenny Perroni #300825160", "About Authors", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});

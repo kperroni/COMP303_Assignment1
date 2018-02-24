@@ -28,6 +28,8 @@ import java.awt.event.MouseEvent;
 public class MenuFrame extends JFrame {
 
 	private JPanel contentPane;
+	public String operation = "0";
+	public String valueInitial;
 
 	/**
 	 * Launch the application.
@@ -48,7 +50,7 @@ public class MenuFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MenuFrame(int userAccount) {
+	public MenuFrame() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MenuFrame.class.getResource("/lab1/img/windowIcon.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 299, 397);
@@ -83,18 +85,22 @@ public class MenuFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-				String valueInitial = JOptionPane.showInputDialog(null, "Enter amount to withdraw");
+				operation = "1";
+				valueInitial = "50";//JOptionPane.showInputDialog(null, "Enter amount to withdraw");
 				double value = Double.parseDouble(valueInitial);
 				if (value <= 0.0) {
 					JOptionPane.showMessageDialog(panel, "Type value greater than 0.0", "Error", JOptionPane.ERROR_MESSAGE);
 
 				}
-				else if (account.getAvailableBalance(userAccount)-value >= 0){
+
+					
+					/*if (account.getAvailableBalance(userAccount)-value >= 0){
 					account.debit(userAccount, value);
 					}else {
 						JOptionPane.showMessageDialog(panel, " You don't have enough Amount", "Error", JOptionPane.ERROR_MESSAGE);
 	
-					}
+					}*/
+				 
 				}
 				catch (Exception e) {
 					JOptionPane.showMessageDialog(panel, "Type number", "Error", JOptionPane.ERROR_MESSAGE);
@@ -115,7 +121,7 @@ public class MenuFrame extends JFrame {
 
 					}
 					else {
-						account.deposit(userAccount, value);
+						//account.deposit(userAccount, value);
 					}
 				
 				}catch (Exception e2) {
@@ -131,7 +137,7 @@ public class MenuFrame extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Your balance is: "+account.getAvailableBalance(userAccount));
+			//	JOptionPane.showMessageDialog(null, "Your balance is: "+account.getAvailableBalance(userAccount));
 			}
 		});
 		
@@ -203,6 +209,11 @@ public class MenuFrame extends JFrame {
 		);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+public synchronized void showMessage(String message) {
+		
+		JOptionPane.showMessageDialog(null, message);	
 	}
 
 }
