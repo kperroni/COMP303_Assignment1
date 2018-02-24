@@ -35,8 +35,7 @@ public class LoginFrame extends JFrame {
 	public JPasswordField txtPassword;
 	public int userAccount;
 	PrintWriter writer;
-	public boolean checkLogin = false;
-	public boolean error = false;
+	private boolean checkLogin = false;
 
 	/**
 	 * Launch the application.
@@ -226,5 +225,13 @@ public class LoginFrame extends JFrame {
 	public synchronized void showMessage(String message) {
 		
 		JOptionPane.showMessageDialog(null, message);	
+	}
+	
+	public void setCheckLogin(boolean value) {
+		this.checkLogin = value;
+	}
+	
+	public boolean getCheckLogin() {
+		return this.checkLogin;
 	}
 }

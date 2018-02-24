@@ -42,7 +42,8 @@ public class Server {
 							writer.println("Depositing");
 						} else if (clientMessage[0].equals("withdraw")) {
 							// TODO: Do withdraw logic
-							writer.println("withdraw-success");
+							writer.println("withdraw-success-300");
+							//writer.println("withdraw-fail");
 						} else if (clientMessage[0].equals("viewBalance")) {
 							// TODO: Do logic to view account balance
 						} else if (clientMessage[0].equals("login")) {

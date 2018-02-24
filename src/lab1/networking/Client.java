@@ -39,32 +39,32 @@ public class Client {
 					synchronized (out) {
 						// Loggin in
 						if (userLogged == false) {
-							if (frame.checkLogin) {
+							if (frame.getCheckLogin()) {
 								char[] userPinChar = frame.txtPassword.getPassword();
 								String passString = new String(userPinChar);
 								// int userPin = Integer.parseInt(passString);
 								sendData("login-" + frame.txtUsername.getText() + "-" + passString);
 								// writer.println("login-" + frame.txtUsername.getText() + "-" + passString);
-								frame.checkLogin = false;
+								frame.setCheckLogin(false);
 							}
 
 						} else { // User is logged
 
-							switch (frameMenu.operation) {
+							switch (frameMenu.getOperation()) {
 
-							case "1": { // Withdraw
-								sendData("withdraw-" + frameMenu.valueInitial);
-								frameMenu.operation = "0";
+							case 1: { // Withdraw
+								sendData("withdraw-" + frameMenu.getAmount());
+								frameMenu.setOperation(0);
 								break;
 							}
-							case "2": { // Deposit
+							case 2: { // Deposit
 
-								frameMenu.operation = "0";
+								frameMenu.setOperation(0);
 								break;
 							}
-							case "3": { // Balance
+							case 3: { // Balance
 
-								frameMenu.operation = "0";
+								frameMenu.setOperation(0);
 								break;
 							}
 							}
@@ -99,7 +99,6 @@ public class Client {
 					case "login": {
 						if (line[1].equals("success")) {
 							userLogged = true;
-							// frameMenu = new MenuFrame();
 							frameMenu.setVisible(true);
 							frameMenu.setResizable(false);
 							frameMenu.setLocationRelativeTo(null);
@@ -122,7 +121,6 @@ public class Client {
 						break;
 					}
 					}
-					System.out.println("FROM SERVER -" + line[0]);
 
 					// Receive login status, open menu frame HERE
 				} catch (Exception e) {

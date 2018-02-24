@@ -28,24 +28,12 @@ import java.awt.event.MouseEvent;
 public class MenuFrame extends JFrame {
 
 	private JPanel contentPane;
-	public String operation = "0";
-	public String valueInitial;
+	private int operation = 0;
+	private String valueInitial;
 
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuFrame frame = new MenuFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the frame.
@@ -85,22 +73,14 @@ public class MenuFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-				operation = "1";
-				valueInitial = "50";//JOptionPane.showInputDialog(null, "Enter amount to withdraw");
+				valueInitial = JOptionPane.showInputDialog(null, "Enter amount to withdraw");
 				double value = Double.parseDouble(valueInitial);
 				if (value <= 0.0) {
 					JOptionPane.showMessageDialog(panel, "Type value greater than 0.0", "Error", JOptionPane.ERROR_MESSAGE);
-
 				}
-
-					
-					/*if (account.getAvailableBalance(userAccount)-value >= 0){
-					account.debit(userAccount, value);
-					}else {
-						JOptionPane.showMessageDialog(panel, " You don't have enough Amount", "Error", JOptionPane.ERROR_MESSAGE);
-	
-					}*/
-				 
+				else {
+					operation = 1;
+				}
 				}
 				catch (Exception e) {
 					JOptionPane.showMessageDialog(panel, "Type number", "Error", JOptionPane.ERROR_MESSAGE);
@@ -215,5 +195,17 @@ public synchronized void showMessage(String message) {
 		
 		JOptionPane.showMessageDialog(null, message);	
 	}
+
+public int getOperation() {
+	return this.operation;
+}
+
+public void setOperation(int operation) {
+	this.operation = operation;
+}
+
+public String getAmount() {
+	return this.valueInitial;
+}
 
 }
