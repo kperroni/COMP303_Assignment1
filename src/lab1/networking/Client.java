@@ -3,8 +3,6 @@ package lab1.networking;
 import java.io.*;
 import java.net.*;
 
-import javax.swing.JOptionPane;
-
 import lab1.gui.LoginFrame;
 import lab1.gui.MenuFrame;
 
@@ -19,7 +17,6 @@ public class Client {
 		OutputStream out;
 		InputStream in;
 		BufferedReader thisReader;
-		String message;
 
 		public Sender(InputStream in, OutputStream out) {
 			this.out = out;
@@ -39,51 +36,41 @@ public class Client {
 				try {
 					// message = thisReader.readLine();
 					synchronized (out) {
-						// Loggin in
+						// Logging in
 						if (userLogged == false) {
-							int passWord=0;
-							int user=0;
+							int passWord = 0;
+							int user = 0;
 							if (frame.getCheckLogin()) {
 								char[] userPinChar = frame.txtPassword.getPassword();
 								String passString = new String(userPinChar);
-								
+
 								// int userPin = Integer.parseInt(passString);
 								try {
-									 passWord = Integer.parseInt(passString);
-									 user = Integer.parseInt(frame.txtUsername.getText());
-									 sendData("login-" + user + "-" + passWord);
-									}
-									catch (Exception e) {
-										sendData("login-fail");
+									passWord = Integer.parseInt(passString);
+									user = Integer.parseInt(frame.txtUsername.getText());
+									sendData("login-" + user + "-" + passWord);
+								} catch (Exception e) {
+									sendData("login-fail");
+								}
 
-									}
-								
-								
-								
 								// writer.println("login-" + frame.txtUsername.getText() + "-" + passString);
 								frame.setCheckLogin(false);
 							}
 
-						} else { // User is logged
-
+						} else { // User is logged in
 							switch (frameMenu.getOperation()) {
-
-							case 1: { // Withdraw
-								sendData("withdraw-" + frameMenu.getAmount() + "-" +frame.txtUsername.getText());
+							case 1: // Withdraw
+								sendData("withdraw-" + frameMenu.getAmount());
 								frameMenu.setOperation(0);
 								break;
-							}
-							case 2: { // Deposit
-								sendData("deposit-" + frameMenu.getAmount()+"-"+frame.txtUsername.getText());
+							case 2: // Deposit
+								sendData("deposit-" + frameMenu.getAmount());
 								frameMenu.setOperation(0);
 								break;
-							}
-							case 3: { // Balance
-								
-								sendData("viewBalance-" + frame.txtUsername.getText());
+							case 3: // Balance
+								sendData("viewBalance");
 								frameMenu.setOperation(0);
 								break;
-							}
 							}
 						}
 					}
@@ -110,10 +97,8 @@ public class Client {
 			do {
 				try {
 					line = servReader.readLine().split("-");
-
 					switch (line[0]) {
-
-					case "login": {
+					case "login":
 						if (line[1].equals("success")) {
 							userLogged = true;
 							frameMenu.setVisible(true);
@@ -126,24 +111,24 @@ public class Client {
 							frame.showMessage("Login Failed");
 						}
 						break;
-					}
-
-					case "withdraw": {
+					case "deposit":
 						if (line[1].equals("success")) {
-							frameMenu.showMessage("Withdrawal successful. Your balance is: "+line[2]);
+							frameMenu.showMessage("Deposit successful. Your balance is: " + line[2]);
+						}
+						break;
+					case "withdraw":
+						if (line[1].equals("success")) {
+							frameMenu.showMessage("Withdrawal successful. Your balance is: " + line[2]);
 						}
 						if (line[1].equals("fail")) {
 							frameMenu.showMessage("Error, you do not have enough funds for this operation");
 						}
 						break;
-					}
-					case "viewBalance": {
+					case "viewBalance":
 						if (line[1].equals("success")) {
-							frameMenu.showMessage("Your balande is: "+line[2]);
+							frameMenu.showMessage("Your balande is: " + line[2]);
 						}
-
 						break;
-					}
 					}
 
 					// Receive login status, open menu frame HERE
@@ -159,7 +144,6 @@ public class Client {
 		this.frame = new LoginFrame();
 		this.frameMenu = new MenuFrame();
 		this.userLogged = false;
-
 	}
 
 	public void connect() throws Exception {

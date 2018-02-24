@@ -3,9 +3,6 @@ package lab1.networking;
 import java.io.*;
 import java.net.*;
 
-import javax.swing.JOptionPane;
-
-import lab1.classes.Account;
 import lab1.classes.BankDatabase;
 
 public class Server {
@@ -19,7 +16,7 @@ public class Server {
 		PrintWriter writer;
 		String[] clientMessage;
 		String clientName;
-		Account userAccount;
+		int userAccount;
 
 		public Reply(InputStream in, OutputStream out, String name) {
 			this.in = in;
@@ -37,62 +34,53 @@ public class Server {
 					synchronized (in) {
 						clientMessage = (clientReader.readLine()).split("-");
 						System.out.println(clientMessage[0]);
-
 					}
 					if (clientMessage.length >= 1) {
 						if (clientMessage[0].equals("deposit")) {
-							// TODO: Do deposit logic
 							writer.println("Depositing");
-							bankDB.deposit(Integer.parseInt(clientMessage[2]),Double.parseDouble(clientMessage[1]));
+							bankDB.deposit(userAccount, Double.parseDouble(clientMessage[1]));
+							writer.println("deposit-" + "success-" + bankDB.getAvailableBalance(userAccount));
 						} else if (clientMessage[0].equals("withdraw")) {
-							// TODO: Do withdraw logic
-							//writer.println("withdraw-success-300");
-							//writer.println("withdraw-fail");
-							if (bankDB.getAvailableBalance(Integer.parseInt(clientMessage[2]))-Double.parseDouble(clientMessage[1])<0) {
-								writer.println("withdraw-"+"fail");
-							}else {
-								bankDB.debit(Integer.parseInt(clientMessage[2]), Double.parseDouble(clientMessage[1]));
-	
-							}
-													
-						} else if (clientMessage[0].equals("viewBalance")) {
-							// TODO: Do logic to view account balance
-							writer.println("viewBalance-"+"success-"+bankDB.getAvailableBalance(Integer.parseInt(clientMessage[1])));
-							//JOptionPane.showMessageDialog(null, "Your balance is: "+bankDB.getAvailableBalance(userAccount));
-						} else if (clientMessage[0].equals("login")) {
-							// TODO: Do login logic
-							if (clientMessage[1].equals("fail")){
-								
-									// return some error
-								writer.println("login-fail");
-							}
-							
-							else 
-								if (bankDB.authenticateUser(Integer.parseInt(clientMessage[1]),
-									Integer.parseInt(clientMessage[2]))) {
-								// User is logged in
-								writer.println("login-success-"+clientMessage[1]);
+							// writer.println("withdraw-success-300");
+							// writer.println("withdraw-fail");
+							if (bankDB.getAvailableBalance(userAccount) - Double.parseDouble(clientMessage[1]) < 0) {
+								writer.println("withdraw-" + "fail");
 							} else {
-								writer.println("login-fail");
+								bankDB.debit(userAccount, Double.parseDouble(clientMessage[1]));
+								writer.println("withdraw-" + "success-" + bankDB.getAvailableBalance(userAccount));
 							}
-								
-							
-					
-				
+						} else if (clientMessage[0].equals("viewBalance")) {
+							writer.println("viewBalance-" + "success-" + bankDB.getAvailableBalance(userAccount));
+							// JOptionPane.showMessageDialog(null, "Your balance is:
+							// "+bankDB.getAvailableBalance(userAccount));
+						} else if (clientMessage[0].equals("login")) {
+							if (clientMessage[1].equals("fail")) {
+								writer.println("login-fail");
+							} else {
+								int tempAccount = Integer.parseInt(clientMessage[1]);
+								if (bankDB.authenticateUser(tempAccount, Integer.parseInt(clientMessage[2]))) {
+									// User is logged in
+									userAccount = tempAccount;
+									writer.println("login-success-" + clientMessage[1]);
+								} else {
+									writer.println("login-fail");
+								}
+							}
 						} else {
 							writer.println("Error: That is not a valid command. Please try again.");
 						}
 					}
-					/* else {
-						writer.println("Error: No command specified. Please enter a valid command.");
-					}*/
+					/*
+					 * else {
+					 * writer.println("Error: No command specified. Please enter a valid command.");
+					 * }
+					 */
 				} catch (Exception e) {
 					e.printStackTrace();
 					break;
 				}
-			}while(true);
-	}
-
+			} while (true);
+		}
 	}
 
 	public Server(int port) throws Exception {
