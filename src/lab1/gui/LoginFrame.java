@@ -131,7 +131,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public synchronized void mouseClicked(MouseEvent e) {
 				JOptionPane.showMessageDialog(null,
-						"Responsabilities:\n\nServer: Wesley Angus #\nClasses: Manoel Britto #300903820\nGUI: Kenny Perroni #300825160",
+						"Responsibilities:\n\nServer: Wesley Angus #300924221\nClasses: Manoel Britto #300903820\nGUI: Kenny Perroni #300825160",
 						"About Authors", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
